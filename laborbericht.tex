@@ -1,0 +1,112 @@
+\documentclass[12pt, a4paper, ngerman]{article}
+\title{AD-DA Wandler}
+\author{Paul Walker \& Jens Hocke}
+\date{29.09.2021}
+\newcommand{\Autor}{Paul Walker \& Jens Hocke}
+\newcommand{\Kurs}{INF20IN}
+\newcommand{\MatrikelNummer}{}
+\newcommand{\Was}{Laborbericht}
+\newcommand{\Studiengang}{Informatik / Informationstechnik}
+
+\usepackage{biblatex} % für bibliografie
+\usepackage{hyperref} % für links zum klicken
+\usepackage{color}    % für Farben (benötigt für listings)
+\usepackage{listings} % code schnipsel
+\usepackage[ngerman]{babel} % lokalisierung der Titel (Inhaltsverzeichniss)
+\usepackage{bookmark} % bookmarks für das PDF
+\usepackage{csquotes} % korrekte quotes
+\usepackage[version=3]{acro} % akronyme
+\usepackage{geometry} % seitengeometrie (margin etc einstellen)
+\usepackage{parskip}  % zeilenabstand bei neuem paragraph statt indentierung
+\usepackage{fancyhdr} % header und footer
+\usepackage{fontawesome5} % icons
+\usepackage{array}    % für bessere Tabellen
+\usepackage{titlesec} % um die Titel anzupassen
+
+\hypersetup{
+  pdfauthor={\Autor},
+  pdftitle={\Was},
+  hidelinks
+}
+
+\geometry{
+  a4paper,
+  left=25mm,
+  right=25mm,
+  headheight=125mm,
+  top=35mm,
+  bottom=30mm,
+  footskip=15mm
+}
+
+% title setup 
+% make paragraph have a newline
+\titleformat{\paragraph}
+{\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
+\titlespacing*{\paragraph}
+{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+
+% add bibliography (should we need one)
+% \addbibresource{bibliography.bib}
+
+% header and footer setup
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{\Was}
+\lhead{\leftmark}
+\lfoot{Autoren: \Autor, Kurs: \Kurs}
+\rfoot{Seite \thepage}
+\renewcommand{\headrulewidth}{1pt}
+\renewcommand{\footrulewidth}{1pt}
+\fancypagestyle{simple}{
+  \fancyhf{}
+  \rhead{\Was}
+  \lfoot{Autor: \Autor, Kurs: \Kurs}
+  \rfoot{Seite \thepage}
+}
+
+% acronyms
+\acsetup{
+  list/display = used,
+  pages/display = first
+}
+\DeclareAcronym{adc}{short=ADC, long=Analog Digital Converter}
+\DeclareAcronym{dac}{short=DAC, long=Digital Analog Converter}
+
+\begin{document}
+
+% Titlepage
+\makeatletter
+\begin{titlepage}
+  \begin{center}
+    \vspace*{1cm}
+    {\Huge\scshape \Was}\\[2cm]
+    \begin{center}
+      \linespread{1}\Huge \@title\\[2cm]
+    \end{center}
+    {\large Studiengang \Studiengang}\\
+    {\large an der Dualen Hochschule Baden-Württemberg\\ Stuttgart}\\[2cm]
+    {\large von}\\
+    {\large\bfseries \@author}
+    \vfill
+  \end{center}
+\end{titlepage}
+\makeatother
+
+% Table of content
+\tableofcontents
+
+\newpage
+\thispagestyle{simple}
+\printacronyms[name=Abkürzungsverzeichnis, heading=section*]
+\newpage
+
+
+\section{Einleitung}
+
+\ac{adc} und \ac{dac} Labor
+
+\section{Schluss}
+% \printbibliography
+
+\end{document}
