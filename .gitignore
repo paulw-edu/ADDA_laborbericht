@@ -10,7 +10,9 @@
 *.toc
 *.out
 *.synctex(busy)
-.vscode
+.vscode/*
 *.acr
 *_temp.tex
 !build/laborbericht.pdf
+!.vscode/extensions.json
+!.vscode/settings.json

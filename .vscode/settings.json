@@ -1,0 +1,11 @@
+{
+    "[bibtex]": {
+        "editor.defaultFormatter": "James-Yu.latex-workshop"
+    },
+    "[latex]": {
+        "editor.defaultFormatter": "James-Yu.latex-workshop"
+    },
+    "latex-workshop.latex.outDir": "%DIR%/build",
+    "ltex.additionalRules.motherTongue": "de-DE",
+    "ltex.language": "de-DE",
+}
