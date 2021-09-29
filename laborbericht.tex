@@ -8,10 +8,10 @@
 \newcommand{\Was}{Laborbericht}
 \newcommand{\Studiengang}{Informatik / Informationstechnik}
 
-\usepackage{biblatex} % für bibliografie
+% \usepackage{biblatex} % für bibliografie
 \usepackage{hyperref} % für links zum klicken
-\usepackage{color}    % für Farben (benötigt für listings)
-\usepackage{listings} % code schnipsel
+% \usepackage{color}    % für Farben (benötigt für listings)
+% \usepackage{listings} % code schnipsel
 \usepackage[ngerman]{babel} % lokalisierung der Titel (Inhaltsverzeichniss)
 \usepackage{bookmark} % bookmarks für das PDF
 \usepackage{csquotes} % korrekte quotes
@@ -19,9 +19,12 @@
 \usepackage{geometry} % seitengeometrie (margin etc einstellen)
 \usepackage{parskip}  % zeilenabstand bei neuem paragraph statt indentierung
 \usepackage{fancyhdr} % header und footer
-\usepackage{fontawesome5} % icons
-\usepackage{array}    % für bessere Tabellen
+% \usepackage{fontawesome5} % icons
+% \usepackage{array}    % für bessere Tabellen
 \usepackage{titlesec} % um die Titel anzupassen
+\usepackage{graphicx} % für graphiken
+
+\graphicspath{{./assets/}}
 
 \hypersetup{
   pdfauthor={\Autor},
@@ -72,6 +75,11 @@
 }
 \DeclareAcronym{adc}{short=ADC, long=Analog Digital Converter}
 \DeclareAcronym{dac}{short=DAC, long=Digital Analog Converter}
+\DeclareAcronym{inl}{short=INL, long=Integrale Nichtlinearität}
+\DeclareAcronym{dnl}{short=DNL, long=Differenzielle Nichtlinearität}
+\DeclareAcronym{dmm}{short=DMM, long=Digitales Multimeter}
+\DeclareAcronym{ttl}{short=TTL, long=Transistor Transistor Logik}
+\DeclareAcronym{led}{short=LED, long=Light Emitting Diode ,first-style=short,subsequent-style=short}
 
 \begin{document}
 
@@ -101,12 +109,35 @@
 \printacronyms[name=Abkürzungsverzeichnis, heading=section*]
 \newpage
 
+\section{Versuch Nr.1}
 
-\section{Einleitung}
+Es soll die \ac{inl} und die \ac{dnl} im mittleren Bereich,
+sowie die Konversionsrate des \ac{adc} gemessen werden.
 
-\ac{adc} und \ac{dac} Labor
+\subsection{Genutze Geräte und Bauteile}
 
-\section{Schluss}
+\ac{dmm}: FLUKE 87 V True RMS Multimeter \\
+Netzgerät: BASETech BT-153 \\
+
+
+\subsection{Versuchsaufbau}
+
+\begin{figure}%[h] % das h sorgt dafür dass es genau an der Position im text steht.
+  \centering
+  \includegraphics[width=0.5\textwidth]{versuch_1_versuchsaufbau.jpeg}
+  \caption{Versuchsaufbau}
+  \label{abb:aufbau1}
+\end{figure}
+
+Dafür wird die Schaltung %TODO schaltskitze einfügen
+und der Versuchsaufbau in Abbildung \ref{abb:aufbau1} verwendet. \\
+Dabei ist zu beachten, dass der Analoge Masseanschluss und der Digitale Masseanschluss des \ac{adc}
+bis zum Netzgerät getrennt verlaufen sollten, um Störungen zu vermeiden.
+
+Die Logik Ausgänge des \ac{adc} sind low-aktive \ac{ttl} Ausgänge.
+Dadurch wird ein 1 Bitwert von einer nicht leuchtenden \ac{led} symbolisiert.
+Die \ac{led}s können auch nicht umgekehrt beschalten werden, da das zu Störungen im \ac{adc} führen würde.
+
 % \printbibliography
 
 \end{document}
