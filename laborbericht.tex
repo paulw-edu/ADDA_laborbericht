@@ -23,8 +23,10 @@
 % \usepackage{array}    % für bessere Tabellen
 \usepackage{titlesec} % um die Titel anzupassen
 \usepackage{graphicx} % für graphiken
+\usepackage{pgfplots} % für plots
 
 \graphicspath{{./assets/}}
+\pgfplotsset{ table/search path={./assets/}}
 
 \hypersetup{
   pdfauthor={\Autor},
@@ -79,6 +81,7 @@
 \DeclareAcronym{dnl}{short=DNL, long=Differenzielle Nichtlinearität}
 \DeclareAcronym{dmm}{short=DMM, long=Digitales Multimeter}
 \DeclareAcronym{ttl}{short=TTL, long=Transistor Transistor Logik}
+\DeclareAcronym{fsr}{short=FSR, long=Full Scale Range}
 \DeclareAcronym{led}{short=LED, long=Light Emitting Diode ,first-style=short,subsequent-style=short}
 
 \begin{document}
@@ -118,25 +121,177 @@ sowie die Konversionsrate des \ac{adc} gemessen werden.
 
 \ac{dmm}: FLUKE 87 V True RMS Multimeter \\
 Netzgerät: BASETech BT-153 \\
-
+\ac{adc}: ADC0804
 
 \subsection{Versuchsaufbau}
 
-\begin{figure}%[h] % das h sorgt dafür dass es genau an der Position im text steht.
+\begin{figure}%[h]
   \centering
-  \includegraphics[width=0.5\textwidth]{versuch_1_versuchsaufbau.jpeg}
-  \caption{Versuchsaufbau}
-  \label{abb:aufbau1}
+  \begin{minipage}[b]{0.49\textwidth}
+    \includegraphics[width=\textwidth]{versuch_1_versuchsaufbau.jpeg}
+    \caption{Versuchsaufbau}
+    \label{abb:aufbau1}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[b]{0.49\textwidth}
+    \includegraphics[width=\textwidth]{example-image-a}
+    \caption{Schaltung}
+    \label{abb:schaltung}
+  \end{minipage}
 \end{figure}
+
 
 Dafür wird die Schaltung %TODO schaltskitze einfügen
 und der Versuchsaufbau in Abbildung \ref{abb:aufbau1} verwendet. \\
-Dabei ist zu beachten, dass der Analoge Masseanschluss und der Digitale Masseanschluss des \ac{adc}
-bis zum Netzgerät getrennt verlaufen sollten, um Störungen zu vermeiden.
+Dabei ist zu beachten, dass der analoge Masseanschluss und der digitale Masseanschluss des \ac{adc}
+bis zum Netzgerät getrennt verlaufen sollten, um Störungen zu vermeiden. \\
+Für unsere Anwendung wird eine Referenz/Versorgungsspannung von $5.12V$ gewählt, um eine Auflösung von $20mV/LSB$ zu erreichen.
+Um die Eingangsspannung möglichst genau einzustellen wird sie direkt am Netzgerät mit dem \ac{dmm} überprüft.
+Auf dem Referenzschaltplan des Datenblattes das \ac{adc} ist der $V_{ref}/2$ Eingang
+des \ac{adc} zusätzlich beschaltet. Dieser erhöht die Genauigkeit der Schaltung. %TODO sicher dass dadurch die genauigkeit erhöt wird?
+Für unsere Anwendung wird er allerdings nicht benötigt.
+
+Der \ac{adc} hat einen differenziellen analog Eingang.
+Da in unserer Schaltung aber nur eine einfache analoge Eingangsspannung digitalisiert werden soll,
+wird der negative Differenzielle Eingang $V_{IN}(-)$ auf GND gesetzt und $V_{IN}(+)$ als einfacher analoger Eingang verwendet.
+Die analoge Eingangsspannung wird für den Versuch direkt vom Netzgerät bezogen
+und für bessere Genauigkeit am Netzgerät mit einem \ac{dmm} gemessen.
 
 Die Logik Ausgänge des \ac{adc} sind low-aktive \ac{ttl} Ausgänge.
-Dadurch wird ein 1 Bitwert von einer nicht leuchtenden \ac{led} symbolisiert.
+Dadurch wird ein 1 Bitwert von einer nicht leuchtenden und ein 0 Bitwert von einer leuchtenden \ac{led} symbolisiert.
 Die \ac{led}s können auch nicht umgekehrt beschalten werden, da das zu Störungen im \ac{adc} führen würde.
+
+\subsection{Messung}
+
+\subsubsection{\acl{inl}}\label{sec:inl}
+
+Es soll die \ac{inl} des \ac{adc} über den gesamten Bereich gemessen werden.
+Es werden 16 gleich große und in der \ac{fsr} gleichmäßig verteilte Übergänge des Bitmusters gemessen.
+
+Dafür wird die analoge Eingangsspannung mit dem \ac{dmm} gemessen und protokolliert.
+Daraufhin wird sie erhöht bis der nächste Bit-Sprung geschieht.
+Der wert bei dem der Bit-Sprung auftritt, wird auch gemessen und protokolliert.
+
+\begin{table}[h]
+  \centering
+  \begin{tabular}{|c|c|c|c|}
+    \hline
+    Digital              & $V_{in}$                   & $\Delta V_{in}$ & Abweichung von der Idealgeraden \\\hline
+    $15\rightarrow 16$   & $0,31V\rightarrow 0,316V$  & $6mV$           & $10mV\;;\;-4mV$                 \\\hline
+    $31\rightarrow 32$   & $0,612V\rightarrow 0,636V$ & $24mV$          & $-8mV\;;\; -4mV$                \\\hline
+    $47\rightarrow 48$   & $0,935V\rightarrow 0,953V$ & $18mV$          & $-5mV\;;\; -7mV$                \\\hline
+    $63\rightarrow 64$   & $1,25V\rightarrow 1,27 V$  & $20mV$          & $-10mV\;;\;-10mV$               \\\hline
+    $79\rightarrow 80$   & $1,575V\rightarrow 1,595V$ & $20mV$          & $-5mV\;;\; -5mV$                \\\hline
+    $95\rightarrow 96$   & $1,887V\rightarrow 1,91 V$ & $23mV$          & $-13mV\;;\;-10mV$               \\\hline
+    $111\rightarrow 112$ & $2,2V\rightarrow 2,215V$   & $15mV$          & $-20mV\;;\;-25mV$               \\\hline
+    $127\rightarrow 128$ & $2,52V\rightarrow 2,54 V$  & $20mV$          & $-20mV\;;\;-20mV$               \\\hline
+    $143\rightarrow 144$ & $2,837V\rightarrow 2,86 V$ & $23mV$          & $-23mV\;;\;-20mV$               \\\hline
+    $159\rightarrow 160$ & $3,16V\rightarrow 3,18 V$  & $20mV$          & $-20mV\;;\;-20mV$               \\\hline
+    $175\rightarrow 176$ & $3,476V\rightarrow 3,491V$ & $15mV$          & $-24mV\;;\;-29mV$               \\\hline
+    $191\rightarrow 192$ & $3,79V\rightarrow 3,828V$  & $38mV$          & $-30mV\;;\;-12mV$               \\\hline
+    $207\rightarrow 208$ & $4,115V\rightarrow 4,137V$ & $22mV$          & $-25mV\;;\;-23mV$               \\\hline
+    $223\rightarrow 224$ & $4,428V\rightarrow 4,444V$ & $16mV$          & $-32mV\;;\;-36mV$               \\\hline
+    $239\rightarrow 240$ & $4,74V\rightarrow 4,756V$  & $16mV$          & $-40mV\;;\;-44mV$               \\\hline
+    $254\rightarrow 255$ & $5,046V\rightarrow 5,055V$ & $9mV$           & $-34mV\;;\;-45mV$               \\\hline
+  \end{tabular}
+  \caption{Werte}
+  \label{table:1}
+\end{table}
+
+\begin{figure}[h]
+  \begin{tikzpicture}
+    \begin{axis}[
+        width=\textwidth,
+        xmin=0,
+        xmax=265,
+        minor y tick num = 3,
+        ymin=0,
+        ymax=5.12,
+        ylabel={Spannung in $V$},
+        xlabel={Digitaler Ausgangswert}
+      ]
+      \addplot table[
+          color=blue,
+          col sep=semicolon,
+          /pgf/number format/read comma as period,
+          x=Dig,
+          y=V
+        ]{data_versuch_1_2.csv};
+      \addlegendentry{Messwerte}
+      \addplot [
+        domain=0:255,
+        samples=10,
+        color=red,
+      ]
+      {x*0.02};
+      \addlegendentry{Idealgerade}
+    \end{axis}
+  \end{tikzpicture}
+  \caption{Übertragungskennlinie}
+  \label{plot:inl}
+\end{figure}
+
+\begin{figure}[h]
+  \begin{tikzpicture}
+    \begin{axis}[
+        ybar interval,
+        ymax=40,
+        ymin=0,
+        minor y tick num = 3,
+        width=\textwidth,
+        xlabel={Digitaler Output},
+        ylabel={Differenzspannungen in $mV$}
+      ]
+      \addplot table [x=Dig2, y=dmV, col sep=semicolon, /pgf/number format/read comma as period] {data_versuch_1.csv};
+    \end{axis}
+  \end{tikzpicture}
+  \caption{Differenzspannungen}
+  \label{plot:res1}
+\end{figure}
+
+
+In Abbildung \ref{plot:inl} und in Tabelle \ref{table:1} lässt sich ein gain Fehler feststellen.
+Dieser Fehler kann vom Bauteil kommen oder aber von einer falschen Einstellung von $V_{ref}$.
+Korrigieren lässt sich der Fehler durch Anpassen von $V_{ref}$. \\
+Massive Fehler in den Differenzspannungen sind nicht erkennbar, der Wert liegt wie erwartet überall bei etwa $20mV$
+
+\subsubsection{\acl{dnl}}
+
+Es soll die \ac{dnl} über den mittleren Bereich des \ac{adc} gemessen werden.
+Dazu werden neun symmetrisch um die Bereichsmitte liegende Werte gemessen.
+Das Messverfahren ist das gleiche wie in \ref{sec:inl}
+
+\begin{figure}[h]
+  \begin{tikzpicture}
+    \begin{axis}[
+        width=\textwidth,
+        xmin=123,
+        xmax=133,
+        ymin=2.4,
+        ymax=2.7,
+        xlabel={Digitaler Ausgangswert},
+        ylabel={Spannung in $V$}
+      ]
+      \addplot table[
+          color=blue,
+          col sep=semicolon,
+          /pgf/number format/read comma as period,
+          y=V,
+          x=Dig
+        ]{data_versuch_1b.csv};
+      \addlegendentry{Messwerte}
+      \addplot [
+        domain=124:132,
+        samples=10,
+        color=red,
+      ]
+      {x*0.02};
+      \addlegendentry{Idealgerade}
+    \end{axis}
+  \end{tikzpicture}
+  \caption{Übertragungskennlinie}
+  \label{plot:inl}
+\end{figure}
 
 % \printbibliography
 
