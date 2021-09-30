@@ -19,7 +19,7 @@
 \usepackage{geometry} % seitengeometrie (margin etc einstellen)
 \usepackage{parskip}  % zeilenabstand bei neuem paragraph statt indentierung
 \usepackage{fancyhdr} % header und footer
-% \usepackage{fontawesome5} % icons
+\usepackage{fontawesome5} % icons
 % \usepackage{array}    % für bessere Tabellen
 \usepackage{titlesec} % um die Titel anzupassen
 \usepackage{graphicx} % für graphiken
@@ -134,14 +134,14 @@ Netzgerät: BASETech BT-153 \\
   \end{minipage}
   \hfill
   \begin{minipage}[b]{0.49\textwidth}
+    %TODO schaltskitze einfügen
     \includegraphics[width=\textwidth]{example-image-a}
     \caption{Schaltung}
-    \label{abb:schaltung}
+    \label{abb:schaltung1}
   \end{minipage}
 \end{figure}
 
-
-Dafür wird die Schaltung %TODO schaltskitze einfügen
+Dafür wird die Schaltung in Abbildung \ref{abb:schaltung1}
 und der Versuchsaufbau in Abbildung \ref{abb:aufbau1} verwendet. \\
 Dabei ist zu beachten, dass der analoge Masseanschluss und der digitale Masseanschluss des \ac{adc}
 bis zum Netzgerät getrennt verlaufen sollten, um Störungen zu vermeiden. \\
@@ -172,7 +172,7 @@ Dafür wird die analoge Eingangsspannung mit dem \ac{dmm} gemessen und protokoll
 Daraufhin wird sie erhöht bis der nächste Bit-Sprung geschieht.
 Der wert bei dem der Bit-Sprung auftritt, wird auch gemessen und protokolliert.
 
-\begin{table}[h]
+\begin{table}%[h]
   \centering
   \begin{tabular}{|c|c|c|c|}
     \hline
@@ -198,10 +198,11 @@ Der wert bei dem der Bit-Sprung auftritt, wird auch gemessen und protokolliert.
   \label{table:1}
 \end{table}
 
-\begin{figure}[h]
+\begin{figure}%[h]
   \begin{tikzpicture}
     \begin{axis}[
         width=\textwidth,
+        height=10cm,
         xmin=0,
         xmax=265,
         minor y tick num = 3,
@@ -231,14 +232,17 @@ Der wert bei dem der Bit-Sprung auftritt, wird auch gemessen und protokolliert.
   \label{plot:inl}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}%[h]
   \begin{tikzpicture}
     \begin{axis}[
         ybar interval,
         ymax=40,
         ymin=0,
+        xmin=16,
+        xmax=256,
         minor y tick num = 3,
         width=\textwidth,
+        height=10cm,
         xlabel={Digitaler Output},
         ylabel={Differenzspannungen in $mV$}
       ]
@@ -246,14 +250,15 @@ Der wert bei dem der Bit-Sprung auftritt, wird auch gemessen und protokolliert.
     \end{axis}
   \end{tikzpicture}
   \caption{Differenzspannungen \ac{inl}}
-  \label{plot:res1}
+  \label{plot:diff1}
 \end{figure}
 
 
 In Abbildung \ref{plot:inl} und in Tabelle \ref{table:1} lässt sich ein gain Fehler feststellen.
 Dieser Fehler kann vom Bauteil kommen oder aber von einer falschen Einstellung von $V_{ref}$.
 Korrigieren lässt sich der Fehler durch Anpassen von $V_{ref}$. \\
-Massive Fehler in den Differenzspannungen sind nicht erkennbar, der Wert liegt wie erwartet überall bei etwa $20mV$
+Massive Fehler in den Differenzspannungen sind nicht erkennbar,
+der Wert liegt wie erwartet überall bei etwa $20mV$ (siehe Abbildung \ref{plot:diff1})
 
 \subsubsection{\acl{dnl}}
 
@@ -261,10 +266,11 @@ Es soll die \ac{dnl} über den mittleren Bereich des \ac{adc} gemessen werden.
 Dazu werden neun symmetrisch um die Bereichsmitte liegende Werte gemessen.
 Das Messverfahren ist das gleiche wie in \ref{sec:inl}
 
-\begin{figure}[h]
+\begin{figure}%[h]
   \begin{tikzpicture}
     \begin{axis}[
         width=\textwidth,
+        height=10cm,
         xmin=123,
         xmax=133,
         ymin=2.4,
@@ -293,7 +299,7 @@ Das Messverfahren ist das gleiche wie in \ref{sec:inl}
   \label{plot:dnl}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}%[h]
   \begin{tikzpicture}
     \begin{axis}[
         ybar interval,
@@ -303,6 +309,7 @@ Das Messverfahren ist das gleiche wie in \ref{sec:inl}
         xmax=132,
         minor y tick num = 3,
         width=\textwidth,
+        height=10cm,
         xlabel={Digitaler Output},
         ylabel={Differenzspannungen in $mV$}
       ]
@@ -329,7 +336,58 @@ Funktionsgenerator: Tektronix AFG3022 Dual Channel Arbitrary/Function Generator 
 Osziloskop: Keysight DSOX1102A Digital Storage Oscilloscope \\
 \ac{dac}: DAC ZN429 (Ferranti)
 
-\section{Versuchsaufbau}
+\subsection{Versuchsaufbau}
+
+
+\begin{figure}%[h]
+  \centering
+  \begin{minipage}[b]{0.49\textwidth}
+    \includegraphics[width=\textwidth]{versuch_2_versuchsaufbau.jpg}
+    \caption{Versuchsaufbau}
+    \label{abb:aufbau2}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[b]{0.49\textwidth}
+    \includegraphics[width=\textwidth]{example-image-b}
+    \caption{Schaltung}
+    \label{abb:schaltung2}
+  \end{minipage}
+\end{figure}
+
+Dafür für Messung wird die Schaltung in Abbildung \ref{abb:schaltung2}
+und der Versuchsaufbau in Abbildung \ref{abb:aufbau2} verwendet. \\
+Es ist zu beachten, dass der \ac{dac} eine Referenzspannung von $2,56V$
+aber eine Versorgungsspannung von $5V$ benötigt.
+
+Es wird der analoge Output des \ac{dac} mit dem Oszilloskop gemessen.
+Bei der Messung ist der Innenwiederstand nicht zu beachten, da dieser hochohmig ist.
+
+\subsection{Messung}
+
+Um die Monotonie und Nichtlinearität des \ac{dac} zu messen,
+werden schrittweise Bitmusters, bei denen genau ein Bit gesetzt ist zwischen diesem und dem darunterliegenden muster gewechselt.
+Dieser Sprung wird dann am Oszilloskop gemessen.
+
+So werden alle Bit-Stellen Schritt für Schritt getestet.
+
+\begin{table}%[h]
+  \centering
+  \begin{tabular}{|c|c|c|c|}
+    \hline
+    Digital                            & $\Delta U_{out}$ & monoton?       \\\hline
+    $0000\,0001\rightarrow 0000\,0000$ & $9,5mV$          & \faIcon{check} \\\hline
+    $0000\,0010\rightarrow 0000\,0001$ & $9,5mV$          & \faIcon{check} \\\hline
+    $0000\,0100\rightarrow 0000\,0011$ & $9,8mV$          & \faIcon{check} \\\hline
+    $0000\,1000\rightarrow 0000\,0111$ & $9,675mV$        & \faIcon{check} \\\hline
+    $0001\,0000\rightarrow 0000\,1111$ & $9,425mV$        & \faIcon{check} \\\hline
+    $0010\,0000\rightarrow 0001\,1111$ & $9,5mV$          & \faIcon{check} \\\hline
+    $0100\,0000\rightarrow 0011\,1111$ & $10,075mV$       & \faIcon{check} \\\hline
+    $1000\,0000\rightarrow 0111\,1111$ & $12,25mV$        & \faIcon{check} \\\hline
+    $0000\,0000\rightarrow 1111\,1111$ & $2,375V$         & \faIcon{check} \\\hline
+  \end{tabular}
+  \caption{Werte}
+  \label{table:2}
+\end{table}
 
 % \printbibliography
 
