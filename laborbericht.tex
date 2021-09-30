@@ -121,7 +121,7 @@ sowie die Konversionsrate des \ac{adc} gemessen werden.
 
 \ac{dmm}: FLUKE 87 V True RMS Multimeter \\
 Netzgerät: BASETech BT-153 \\
-\ac{adc}: ADC0804
+\ac{adc}: ADC0804 (National Semiconductor)
 
 \subsection{Versuchsaufbau}
 
@@ -227,7 +227,7 @@ Der wert bei dem der Bit-Sprung auftritt, wird auch gemessen und protokolliert.
       \addlegendentry{Idealgerade}
     \end{axis}
   \end{tikzpicture}
-  \caption{Übertragungskennlinie}
+  \caption{Übertragungskennlinie \ac{inl}}
   \label{plot:inl}
 \end{figure}
 
@@ -245,7 +245,7 @@ Der wert bei dem der Bit-Sprung auftritt, wird auch gemessen und protokolliert.
       \addplot table [x=Dig2, y=dmV, col sep=semicolon, /pgf/number format/read comma as period] {data_versuch_1.csv};
     \end{axis}
   \end{tikzpicture}
-  \caption{Differenzspannungen}
+  \caption{Differenzspannungen \ac{inl}}
   \label{plot:res1}
 \end{figure}
 
@@ -289,9 +289,47 @@ Das Messverfahren ist das gleiche wie in \ref{sec:inl}
       \addlegendentry{Idealgerade}
     \end{axis}
   \end{tikzpicture}
-  \caption{Übertragungskennlinie}
-  \label{plot:inl}
+  \caption{Übertragungskennlinie \ac{dnl}}
+  \label{plot:dnl}
 \end{figure}
+
+\begin{figure}[h]
+  \begin{tikzpicture}
+    \begin{axis}[
+        ybar interval,
+        ymax=40,
+        ymin=0,
+        xmin=124,
+        xmax=132,
+        minor y tick num = 3,
+        width=\textwidth,
+        xlabel={Digitaler Output},
+        ylabel={Differenzspannungen in $mV$}
+      ]
+      \addplot table [x=Dig, y=Vdiff, col sep=semicolon, /pgf/number format/read comma as period] {data_versuch_1b_2.csv};
+    \end{axis}
+  \end{tikzpicture}
+  \caption{Differenzspannungen \ac{dnl}}
+  \label{plot:diff2}
+\end{figure}
+
+Es ist wie in \ref{sec:inl} ein Offsetfehler erkennbar (Abbildung \ref{plot:dnl}).
+In den Differenzspannungen (Abbildung \ref{plot:diff2}) ist kein nennenswerter Fehler feststellbar.
+Monotonieverletzungen sind auch nicht erkennbar (Abbildung \ref{plot:dnl}).
+
+\section{Versuch Nr.2}
+
+Es soll die Monotonie, die Linearität und die Einschwingzeit des \ac{dac} gemessen werden.
+
+\subsection{Genutzte Geräte und Bauteile}
+
+\acl{dmm}: FLUKE 87 V True RMS Multimeter \\
+Netzgerät: BASETech BT-153 \\
+Funktionsgenerator: Tektronix AFG3022 Dual Channel Arbitrary/Function Generator \\
+Osziloskop: Keysight DSOX1102A Digital Storage Oscilloscope \\
+\ac{dac}: DAC ZN429 (Ferranti)
+
+\section{Versuchsaufbau}
 
 % \printbibliography
 
