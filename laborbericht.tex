@@ -324,6 +324,19 @@ Es ist wie in \ref{sec:inl} ein Offsetfehler erkennbar (Abbildung \ref{plot:dnl}
 In den Differenzspannungen (Abbildung \ref{plot:diff2}) ist kein nennenswerter Fehler feststellbar.
 Monotonieverletzungen sind auch nicht erkennbar (Abbildung \ref{plot:dnl}).
 
+\subsubsection{Konversionszeit}
+
+Die Clock-Frequenz des \ac{adc} kann über die Clock-Pins des \ac{adc} gemessen werden und beträgt $418kHz$
+
+Die Konversionszeit kann direkt am Interrupt Eingang gemessen werden,
+da der \ac{adc} in unserem Fall im \enquote{Free Running Mode} arbeitet
+und damit maximal schnell konvertiert.
+Die Konversionsrate beträgt $5,87kHz$ und die Konversionszeit damit $170,3\mu s$
+
+Damit benötigt der \ac{adc} $71$ Clock-Zyklen zum Konvertieren eines Wertes.
+
+%TODO vergleich mit Datenblatt
+
 \section{Versuch Nr.2}
 
 Es soll die Monotonie, die Linearität und die Einschwingzeit des \ac{dac} gemessen werden.
@@ -333,8 +346,9 @@ Es soll die Monotonie, die Linearität und die Einschwingzeit des \ac{dac} gemes
 \acl{dmm}: FLUKE 87 V True RMS Multimeter \\
 Netzgerät: BASETech BT-153 \\
 Funktionsgenerator: Tektronix AFG3022 Dual Channel Arbitrary/Function Generator \\
-Osziloskop: Keysight DSOX1102A Digital Storage Oscilloscope \\
+Oszilloskop: Keysight DSOX1102A Digital Storage Oscilloscope \\
 \ac{dac}: DAC ZN429 (Ferranti)
+% TODO hier vielleicht noch den DFlipFlop hinzufügen
 
 \subsection{Versuchsaufbau}
 
@@ -360,6 +374,8 @@ Es ist zu beachten, dass der \ac{dac} eine Referenzspannung von $2,56V$
 aber eine Versorgungsspannung von $5V$ benötigt.
 
 Es wird der analoge Output des \ac{dac} mit dem Oszilloskop gemessen.
+Die Messung wäre zwar auch mit einem \ac{dmm} möglich,
+allerdings besitzt das Oszilloskop in dieser Anwendung eine höhere Genauigkeit, da eine Spannungsdifferenz gemessen werden soll.
 Bei der Messung ist der Innenwiederstand nicht zu beachten, da dieser hochohmig ist.
 
 \subsection{Messung}
@@ -369,6 +385,9 @@ werden schrittweise Bitmusters, bei denen genau ein Bit gesetzt ist zwischen die
 Dieser Sprung wird dann am Oszilloskop gemessen.
 
 So werden alle Bit-Stellen Schritt für Schritt getestet.
+% TODO: Statt der in der Literatur angegebenen Triggerung des Scope mit dem Q-Ausgagng des FF
+% könnte auch direkt mit dem Bitsprung des DAC-Ausgangs getriggert werden. 
+% Was ist vorzuziehen? Begründung? 
 
 \begin{table}%[h]
   \centering
@@ -389,6 +408,60 @@ So werden alle Bit-Stellen Schritt für Schritt getestet.
   \label{table:2}
 \end{table}
 
+Das Ergebnis ist eine gute Linearität mit $\Delta U_{out}\approx 10mV$.
+Für eine Ideale Linearität werden für eine Auflösung von 8Bit bei einer Versorgungsspannung von $2.56V$
+wird der Wert $10mV/LSB$ erwartet. Es wird noch von Linearität gesprochen so lange $\Delta U_{out}<2LSB$.
+Damit ist der \ac{dac} sehr stark linear. \\
+Die Messungen haben außerdem ergeben, dass der \ac{dac} durchgängig linear ist.
+Denn ein positiver Bit-Sprung erzeugt in jedem Fall eine Positive $U_{out}$ Flanke.
+
+\begin{figure}%[h]
+  \centering
+  \includegraphics[width=0.6\textwidth]{scope_34.png}
+  \caption{Einschwingverhalten}
+  \label{abb:einschwing1}
+\end{figure}
+
+In Abbildung \ref{abb:einschwing1} ist das Einschwingverhalten des \ac{dac} für den Übergang $0000\,0000\rightarrow 1111\,1111$
+dargestellt. Da sich bei diesem Bitmuster die alle Bits ändern und $\Delta U_{out}$ am höchsten ist,
+ist es ideal für die Feststellung der Einschwingzeit. Die Zeit bis $10\%$ von $U_{out MAX}$ erreicht sind,
+beträgt $90ns$. Die Zeit bis $90\%$ von $U_{out MAX}$ erreicht sind,
+beträgt $690ns$ % TODO vergleich mit Datenblatt
+
 % \printbibliography
+
+\section{Versuch Nr.3}
+
+Es soll der analoge Fehler der Hintereinanderschaltung von \ac{adc} und \ac{dac} gemessen werden.
+
+\subsection{Genutzte Geräte und Bauteile}
+
+\acl{dmm}: FLUKE 87 V True RMS Multimeter \\
+Netzgerät 1: BASETech BT-153 \\
+Netzgerät 2: PeakTech DC Dual Power Supply 6210 \\
+Funktionsgenerator: Tektronix AFG3022 Dual Channel Arbitrary/Function Generator \\
+Oszilloskop: Keysight DSOX1102A Digital Storage Oscilloscope \\
+\ac{dac}: DAC ZN429 (Ferranti) \\
+\ac{adc}: ADC0804 (National Semiconductor)
+% TODO hier vielleicht noch den OpAmp hinzufügen
+
+\subsection{Versuchsaufbau}
+
+\begin{figure}%[h]
+  \centering
+  % \begin{minipage}[b]{0.49\textwidth} % TODO Versuchsaufbau hinzufügen
+  %   \includegraphics[width=\textwidth]{versuch_2_versuchsaufbau.jpg}
+  %   \caption{Versuchsaufbau}
+  %   \label{abb:aufbau2}
+  % \end{minipage}
+  % \hfill
+  \begin{minipage}[b]{0.49\textwidth}
+    \includegraphics[width=\textwidth]{example-image-b}
+    \caption{Schaltung}
+    \label{abb:schaltung3}
+  \end{minipage}
+\end{figure}
+
+
 
 \end{document}
