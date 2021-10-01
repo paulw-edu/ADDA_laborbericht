@@ -82,6 +82,7 @@
 \DeclareAcronym{dmm}{short=DMM, long=Digitales Multimeter}
 \DeclareAcronym{ttl}{short=TTL, long=Transistor Transistor Logik}
 \DeclareAcronym{fsr}{short=FSR, long=Full Scale Range}
+\DeclareAcronym{op}{short=OpAmp, long=Operationsverstärker}
 \DeclareAcronym{led}{short=LED, long=Light Emitting Diode ,first-style=short,subsequent-style=short}
 
 \begin{document}
@@ -135,7 +136,7 @@ Netzgerät: BASETech BT-153 \\
   \hfill
   \begin{minipage}[b]{0.49\textwidth}
     %TODO schaltskitze einfügen
-    \includegraphics[width=\textwidth]{example-image-a}
+    \includegraphics[width=\textwidth]{Schaltplan_Versuch_1.PNG}
     \caption{Schaltung}
     \label{abb:schaltung1}
   \end{minipage}
@@ -368,7 +369,7 @@ Oszilloskop: Keysight DSOX1102A Digital Storage Oscilloscope \\
   \end{minipage}
 \end{figure}
 
-Dafür für Messung wird die Schaltung in Abbildung \ref{abb:schaltung2}
+Für die Messung wird die Schaltung in Abbildung \ref{abb:schaltung2}
 und der Versuchsaufbau in Abbildung \ref{abb:aufbau2} verwendet. \\
 Es ist zu beachten, dass der \ac{dac} eine Referenzspannung von $2,56V$
 aber eine Versorgungsspannung von $5V$ benötigt.
@@ -449,12 +450,12 @@ Oszilloskop: Keysight DSOX1102A Digital Storage Oscilloscope \\
 
 \begin{figure}%[h]
   \centering
-  % \begin{minipage}[b]{0.49\textwidth} % TODO Versuchsaufbau hinzufügen
-  %   \includegraphics[width=\textwidth]{versuch_2_versuchsaufbau.jpg}
-  %   \caption{Versuchsaufbau}
-  %   \label{abb:aufbau2}
-  % \end{minipage}
-  % \hfill
+  \begin{minipage}[b]{0.49\textwidth} % TODO Versuchsaufbau hinzufügen
+    \includegraphics[width=\textwidth]{example-image-a}
+    \caption{Versuchsaufbau}
+    \label{abb:aufbau3}
+  \end{minipage}
+  \hfill
   \begin{minipage}[b]{0.49\textwidth}
     \includegraphics[width=\textwidth]{example-image-b}
     \caption{Schaltung}
@@ -462,6 +463,75 @@ Oszilloskop: Keysight DSOX1102A Digital Storage Oscilloscope \\
   \end{minipage}
 \end{figure}
 
+Für die Messung wird die Schaltung in Abbildung \ref{abb:schaltung3}
+und der Versuchsaufbau in Abbildung \ref{abb:aufbau3} verwendet. \\
+Diese Schaltung liefert als Ausgangsspannung den Fehler
+der Hintereinanderschaltung von \ac{adc} und \ac{dac}.
+Dabei sollen allerdings nur Differenzfehler gemessen werden,
+Offsetfehler sollen nicht betrachtet werden.
+Daher muss die Verstärkerschaltung nach dem \ac{dac} einstellbar gemacht werden.
+Dies geschieht über ein Potenziometer.
+Als Ausgangswert wird die Verstärkerschaltung über das Potenziometer auf eine Verstärkung von $4$ gesetzt.
+Damit werden auch die unterschiedlichen Arbeitsspannungen des \ac{adc} und \ac{dac} und der Innenwiederstand des \ac{dac} ausgeglichen.
+
+Es werden insgesamt 3 Versorgungsspannung benötigt.
+Der \ac{dac} benötigt $5V$ Versorgungsspannung und $2,56V$ Referenzspannung.
+Der \ac{adc} benötigt $5,12V$ Versorgungs-/Referenzspannung.
+Der \ac{op} benötigt $\pm 14V$ Versorgungsspannung.
+
+
+\subsection{Messung}
+
+\subsubsection{Analog Error Signal}
+
+Es wird der Fehler der Hintereinanderschaltung des \ac{adc} und \ac{dac} am Ausgang gemessen.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.7\textwidth]{scope_38.png}
+  \caption{Fehler der Schaltung}
+  \label{plot:fehler1}
+\end{figure}
+
+In Abbildung \ref{plot:fehler1} ist erkennbar,
+dass das Fehlersignal in etwa horizontal und gleichmäßig verläuft.
+
+Aus diesem Fehlersignal kann der Fehler des \ac{adc} ungefähr bestimmt werden,
+da dieser den größten Einfluss auf den Fehler hat. \\
+Der Fehler des \ac{adc} kann mit dieser Formel aus dem Output der Schaltung bestimmt werden.
+Aufgrund der 10-Fachen Verstärkung muss $\Delta U$ durch $10$ geteilt werden.
+
+$$
+  Fehler ADC \approx (\frac{\frac{\Delta U}{10}}{20mV})_{LSB}-1 = (\frac{\frac{1,45V}{10}}{20mV})_{LSB} = \pm 6 LSB
+$$
+
+\subsubsection{Aliasing Effekt}
+
+Nun wird das Signal direkt am Ausgang des \ac{dac} gemessen und mit dem Eingangssignal verglichen.
+Dabei fällt auf, dass es bei hohen Frequenzen am Ausgang immer schwerer wird verschiedene Signale zu unterscheiden.
+
+\begin{figure}%[h]
+  \centering
+  \begin{minipage}[b]{0.49\textwidth} % TODO Versuchsaufbau hinzufügen
+    \includegraphics[width=\textwidth]{scope_49.png}
+    \caption{Sinus Signal}
+    \label{abb:aliasSin}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[b]{0.49\textwidth}
+    \includegraphics[width=\textwidth]{scope_50.png}
+    \caption{Dreieck Signal}
+    \label{abb:aliasTri}
+  \end{minipage}
+\end{figure}
+
+So Lässt sich ab etwa $500Hz$ fast kein Unterschied
+zwischen einem Sinus Signal (Abbildung \ref{abb:aliasSin})
+und einem Dreieck Signal (Abbildung \ref{abb:aliasTri}) finden.
+
+Grundsätzlich kann man sagen,
+dass Signale ab der halben Abtastfrequenz aufwärts nicht mehr unterscheidbar sind.
+Es entstehen Schwebungszustände. Man spricht auch vom Nyquist-Kriterium.
 
 
 \end{document}
